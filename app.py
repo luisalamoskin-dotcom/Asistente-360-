@@ -43,10 +43,20 @@ cursor.execute(
 conn.commit()
 
 # --- BARRA LATERAL (CONFIGURACIÓN Y GEMINI) ---
-st.sidebar.title("⚡ Control Central")
-api_key = st.sidebar.text_input(
-    "API Key de Gemini", type="password", help="Ingresa tu clave de la API de Gemini"
-)
+st.sidebar.subheader("⚡ Control Central")
+
+# Campo de texto para la API Key
+api_input = st.sidebar.text_input("API Key de Gemini", type="password", value=st.session_state.get("gemini_key", ""))
+
+# Botón explícito para guardar
+if st.sidebar.button("Guardar Clave"):
+    if api_input:
+        st.session_state["gemini_key"] = api_input
+        st.sidebar.success("¡Clave guardada con éxito!")
+    else:
+        st.sidebar.error("Por favor escribe una clave.")
+
+api_key = st.session_state.get("gemini_key", "")
 
 menu = st.sidebar.selectbox(
     "Navegación",
